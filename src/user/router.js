@@ -1,11 +1,11 @@
-import UserController from './controller';
+const UserController = require('./controller')
 
-const router = require('express').Router();
+const router = require('express').Router()
 
-router.get('/profile', (req, res)=>{
-    res.send(req.user);
+router.get('/profile', (req, res) => {
+    res.send(req.user)
 })
 
 router.post('/profile', UserController.updateProfile)
 
-export default router;
+module.exports = router
