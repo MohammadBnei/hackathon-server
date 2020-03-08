@@ -3,7 +3,8 @@ const UserService = require('../user/service')
 
 module.exports = {
     signup: async (req, res, next) => {
-        const { email, password, firstName, lastName } = req.body
+        const newUser = req.body
+        const { email, password } = newUser
 
         if (!email || !password) {
             return res
@@ -12,9 +13,7 @@ module.exports = {
         }
 
         try {
-            await UserService.create({
-                email, password, firstName, lastName
-            })
+            await UserService.create(newUser)
             res.json({
                 success: true
             })

@@ -9,6 +9,7 @@ const config = require('./config')
 const Middlewares = require('./api/middlewares')
 const Authentication = require('./api/authentication')
 const UserRouter = require('./user/router')
+const TeamRouter = require('./team/router')
 
 if (!process.env.JWT_SECRET) {
     const err = new Error('No JWT_SECRET in env variable, check instructions: https://github.com/amazingandyyy/mern#prepare-your-secret')
@@ -24,7 +25,7 @@ mongoose.Promise = global.Promise
 
 // App Setup
 app.use(cors({
-    origin: ['https://www.amazingandyyy.com', 'http://localhost:3000']
+    origin: ['https://www.amazingandyyy.com', 'http://localhost:8080']
 }))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
@@ -35,6 +36,7 @@ app.post('/signup', Authentication.signup)
 app.post('/signin', Authentication.signin)
 app.get('/auth-ping', Middlewares.loginRequired, (req, res) => res.send('connected'))
 app.use('/user', Middlewares.loginRequired, UserRouter)
+app.use('/team', Middlewares.loginRequired, TeamRouter)
 
 app.use((err, req, res, next) => {
     console.log('Error:', err.message)

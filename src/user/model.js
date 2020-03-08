@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt-nodejs')
+const { roles, competences } = require('../util/enums')
 
 // Define the model
 const Schema = new mongoose.Schema({
@@ -12,11 +13,27 @@ const Schema = new mongoose.Schema({
         unique: true,
         lowercase: true
     },
-    emailVerified: {
-        type: Boolean,
-        default: false
+    password: String,
+    status: {
+        approved: Boolean,
+        role: {
+            type: String,
+            enum: roles,
+            lowercase: true
+        },
+        competences: [{
+            type: String,
+            enum: competences,
+            lowercase: true
+        }]
     },
-    password: String
+    capacities: [{
+        type: String,
+        lowercase: true
+    }],
+    externalLinks: [{
+        type: String
+    }]
 })
 
 Schema.pre('save', function (next) {

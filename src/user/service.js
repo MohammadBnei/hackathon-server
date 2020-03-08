@@ -2,25 +2,41 @@ const UserModel = require('./model')
 const UserError = require('./error')
 
 module.exports = {
-    create: async ({ email, password, firstName, lastName }) => {
+    findById: async (id) => {
+        const user = await UserModel.findById(id)
+
+        if (!user) {
+            throw new UserError({
+                message: 'Cannot find user by id',
+                httpStatus: 401
+            })
+        }
+
+        return user
+    },
+
+    create: async (newUser) => {
         /**
          * TODO : Verification of the _user
          * TODO : Sanity check
          */
 
-        if (findOne({ email })) {
+        const { email, firstName, lastName } = newUser
+
+        if (await UserModel.findOne({ email })) {
             throw new UserError({
                 httpStatus: 422,
                 message: 'Email already in use'
             })
         }
 
+        console.log({ newUser })
+
         const user = new UserModel({
-            email,
-            password,
+            ...newUser,
             name: {
-                firstName,
-                lastName
+                first: firstName,
+                last: lastName
             }
         })
 
